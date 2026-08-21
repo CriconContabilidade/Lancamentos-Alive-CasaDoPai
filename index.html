@@ -478,6 +478,13 @@ const PADROES_SEED = {
          // (ex. "Aquisições e Melhorias", que no diário real virou ora Serviços de
          // Terceiros ora Manutenção, dependendo do fornecedor) fica de fora de propósito.
     {keywords:["DIZIMO","OFERTA"], debito:null, credito:54, hist:"RECEBIMENTO REF. DIZIMOS E OFERTAS", ignorar:false},
+    // "Transferência Alive EUA" / "Alive Church" no relatório é a ALIVE CHURCH DOS ESTADOS
+    // UNIDOS (organização americana ligada à igreja, sem relação societária com a Igreja
+    // Alive Church Brasil/366) — confirmado com o usuário. Vira doação normal da Casa do
+    // Pai (conta 152), NÃO é o empréstimo entre as duas empresas brasileiras (conta 143).
+    // Fica ANTES do padrão genérico de "Ajuda de Custo" de propósito, pra ganhar a
+    // prioridade (matchPadrao usa o primeiro padrão que bater).
+    {keywords:["ALIVE EUA","ALIVE CHURCH"], debito:null, credito:152, hist:"RECEBIMENTO REF. DOACAO ALIVE CHURCH EUA", ignorar:false},
     {keywords:["DOACAO"], debito:null, credito:152, hist:"RECEBIMENTO REF. DOACOES", ignorar:false},
     {keywords:["AGUA (DISTRIBUIDORA)","AGUA DISTRIBUIDORA"], debito:78, credito:null, hist:"PGTO REF. AGUA", ignorar:false},
     {keywords:["ENERGIA ELETRICA"], debito:120, credito:null, hist:"PGTO REF. ENERGIA ELETRICA", ignorar:false},
@@ -485,10 +492,26 @@ const PADROES_SEED = {
     {keywords:["ALUGUEL"], debito:71, credito:null, hist:"PGTO REF. ALUGUEL", ignorar:false},
     {keywords:["ALVARA"], debito:68, credito:null, hist:"PGTO REF. ALVARA", ignorar:false},
     {keywords:["DESPESAS BANCARIAS"], debito:49, credito:null, hist:"PGTO REF. DESPESAS BANCARIAS", ignorar:false},
+    // Fatura do cartão (categoria "Cartão de Crédito" no relatório) = só a BAIXA da fatura
+    // que já chegou pelo extrato — as compras individuais (Débito despesa / Crédito 145)
+    // não aparecem nesse relatório do pastor, só na fatura em si; por isso aqui é só a
+    // baixa (Débito 145 / Crédito banco), confirmado com o usuário.
+    {keywords:["CARTAO DE CREDITO"], debito:145, credito:null, hist:"PGTO REF. FATURA DO CARTAO DE CREDITO", ignorar:false},
+    // Mesma lógica pra Contabilidade — o relatório do pastor só mostra o pagamento (baixa
+    // da conta 85 "Honorários Contábeis a Pagar"), o lançamento da prestação do serviço
+    // (Débito 61 / Crédito 85) é feito à parte pelo escritório no fechamento do mês.
+    {keywords:["CONTABILIDADE"], debito:85, credito:null, hist:"PGTO REF. HONORARIOS CONTABEIS", ignorar:false},
+    {keywords:["VIGILANCIA"], debito:40, credito:null, hist:"PGTO REF. A VIGILANCIA", ignorar:false},
+    {keywords:["AJUDA DE CUSTO","AJUDA SOCIAL"], debito:38, credito:null, hist:"PGTO REF. AJUDA DE CUSTO", ignorar:false},
   ],
   366: [ // Igreja Alive Church Brasil — conta banco = 7 (Bradesco). Mesmo critério: só nome
          // literal batendo com o plano de contas da Alive — sem histórico de diário real
          // dessa empresa ainda pra confirmar o resto, então fica em branco de propósito.
+         // Empréstimo entre empresas (Alive → Casa do Pai) usa a conta 90 "Empréstimos entre
+         // Empresas - Casa do Pai" (criada pelo usuário) — ainda sem padrão de palavra-chave
+         // cadastrado porque nenhuma transação real desse tipo apareceu nos dados vistos até
+         // agora; cadastre manualmente (+ Novo padrão) quando aparecer uma de verdade, com o
+         // texto exato que identifica esse repasse no relatório daquele mês.
     {keywords:["DIZIMO","OFERTA"], debito:null, credito:102, hist:"RECEBIMENTO REF. DIZIMOS E OFERTAS", ignorar:false},
     {keywords:["DOACAO"], debito:null, credito:103, hist:"RECEBIMENTO REF. DOACOES", ignorar:false},
     {keywords:["AGUA (DISTRIBUIDORA)","AGUA DISTRIBUIDORA"], debito:127, credito:null, hist:"PGTO REF. AGUA", ignorar:false},
