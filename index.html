@@ -503,6 +503,27 @@ const PADROES_SEED = {
     {keywords:["CONTABILIDADE"], debito:85, credito:null, hist:"PGTO REF. HONORARIOS CONTABEIS", ignorar:false},
     {keywords:["VIGILANCIA"], debito:40, credito:null, hist:"PGTO REF. A VIGILANCIA", ignorar:false},
     {keywords:["AJUDA DE CUSTO","AJUDA SOCIAL"], debito:38, credito:null, hist:"PGTO REF. AJUDA DE CUSTO", ignorar:false},
+    {keywords:["SISTEMA"], debito:121, credito:null, hist:"PGTO REF. SISTEMA", ignorar:false},
+    {keywords:["PADARIA"], debito:65, credito:null, hist:"PGTO REF. PADARIA", ignorar:false},
+    // Palavra-chave é "CARTORIO" (o nome da conta), não "ADVOGADO" (a categoria do
+    // relatório) — categoria "Advogado" pode um dia incluir honorários de advogado de
+    // verdade, que não é a mesma conta de "Cartório" (151); confirmado pelo usuário que
+    // ESTE item específico ("Despesas Cartório") é cartório mesmo.
+    {keywords:["CARTORIO"], debito:151, credito:null, hist:"PGTO REF. CARTORIO", ignorar:false},
+    {keywords:["REEMBOLSO"], debito:153, credito:null, hist:"PGTO REF. REEMBOLSO", ignorar:false},
+    // "Manutenção Predial" é o "default" pra reparo/obra predial (confirmado com o usuário,
+    // inclusive pra limpeza recorrente tipo faxina) — cobre a maioria dos itens dessa
+    // categoria. Fica DEPOIS de qualquer padrão mais específico que também possa aparecer
+    // sob essa categoria no futuro.
+    {keywords:["MANUTENCAO PREDIAL"], debito:42, credito:null, hist:"PGTO REF. MANUTENCAO PREDIAL", ignorar:false},
+    {keywords:["SALARIO"], debito:83, credito:null, hist:"PGTO REF. SUSTENTO PASTORAL", ignorar:false},
+    {keywords:["MINISTERIO INFANTIL"], debito:103, credito:null, hist:"PGTO REF. MINISTERIO INFANTIL", ignorar:false},
+    {keywords:["MINISTERIO DE LOUVOR","MINISTERIO LOUVOR"], debito:105, credito:null, hist:"PGTO REF. MINISTERIO DE LOUVOR", ignorar:false},
+    // Wisbeck Eletrosom = fornecedor financiado (conta 154, Contas a Pagar) do
+    // equipamento de Áudio/Visual — a compra do imobilizado em si é lançada à parte (fora
+    // deste relatório); aqui só entra a baixa de cada parcela paga (Débito 154 / Crédito
+    // banco), confirmado com o usuário.
+    {keywords:["WISBECK"], debito:154, credito:null, hist:"PGTO REF. PARCELA EQUIP. AUDIO/VISUAL - WISBECK ELETROSOM", ignorar:false},
   ],
   366: [ // Igreja Alive Church Brasil — conta banco = 7 (Bradesco). Mesmo critério: só nome
          // literal batendo com o plano de contas da Alive — sem histórico de diário real
