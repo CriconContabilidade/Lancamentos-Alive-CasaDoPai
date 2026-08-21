@@ -472,13 +472,28 @@ function separarPorEmpresa(itens, bancoAlive, bancoCasaDoPai){
    uma conta: o usuário cadastra olhando o plano de contas real.
    ========================================================================= */
 const PADROES_SEED = {
-  244: [ // Ministério Casa do Pai — conta banco = 10 (Banco Sicredi)
+  244: [ // Ministério Casa do Pai — conta banco = 10 (Banco Sicredi). Só entram aqui os
+         // casos em que o nome da categoria do relatório do pastor bate literalmente com o
+         // nome da conta no plano de contas — qualquer coisa que precise de julgamento
+         // (ex. "Aquisições e Melhorias", que no diário real virou ora Serviços de
+         // Terceiros ora Manutenção, dependendo do fornecedor) fica de fora de propósito.
     {keywords:["DIZIMO","OFERTA"], debito:null, credito:54, hist:"RECEBIMENTO REF. DIZIMOS E OFERTAS", ignorar:false},
     {keywords:["DOACAO"], debito:null, credito:152, hist:"RECEBIMENTO REF. DOACOES", ignorar:false},
+    {keywords:["AGUA (DISTRIBUIDORA)","AGUA DISTRIBUIDORA"], debito:78, credito:null, hist:"PGTO REF. AGUA", ignorar:false},
+    {keywords:["ENERGIA ELETRICA"], debito:120, credito:null, hist:"PGTO REF. ENERGIA ELETRICA", ignorar:false},
+    {keywords:["INTERNET"], debito:100, credito:null, hist:"PGTO REF. INTERNET", ignorar:false},
+    {keywords:["ALUGUEL"], debito:71, credito:null, hist:"PGTO REF. ALUGUEL", ignorar:false},
+    {keywords:["ALVARA"], debito:68, credito:null, hist:"PGTO REF. ALVARA", ignorar:false},
+    {keywords:["DESPESAS BANCARIAS"], debito:49, credito:null, hist:"PGTO REF. DESPESAS BANCARIAS", ignorar:false},
   ],
-  366: [ // Igreja Alive Church Brasil — conta banco = 7 (Bradesco)
+  366: [ // Igreja Alive Church Brasil — conta banco = 7 (Bradesco). Mesmo critério: só nome
+         // literal batendo com o plano de contas da Alive — sem histórico de diário real
+         // dessa empresa ainda pra confirmar o resto, então fica em branco de propósito.
     {keywords:["DIZIMO","OFERTA"], debito:null, credito:102, hist:"RECEBIMENTO REF. DIZIMOS E OFERTAS", ignorar:false},
     {keywords:["DOACAO"], debito:null, credito:103, hist:"RECEBIMENTO REF. DOACOES", ignorar:false},
+    {keywords:["AGUA (DISTRIBUIDORA)","AGUA DISTRIBUIDORA"], debito:127, credito:null, hist:"PGTO REF. AGUA", ignorar:false},
+    {keywords:["ENERGIA"], debito:126, credito:null, hist:"PGTO REF. ENERGIA", ignorar:false},
+    {keywords:["ALUGUEL"], debito:128, credito:null, hist:"PGTO REF. ALUGUEL", ignorar:false},
   ],
 };
 const CONTA_BANCO = {244: 10, 366: 7};
