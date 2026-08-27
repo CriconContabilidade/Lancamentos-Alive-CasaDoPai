@@ -324,14 +324,22 @@ function markDropDone(drop, label){ drop.classList.add("done"); drop.querySelect
 async function extractPdfPageLines(pdf, pageNum){
   const page = await pdf.getPage(pageNum);
   const content = await page.getTextContent();
-  const rows = {};
-  content.items.forEach(it=>{
-    const y = Math.round(it.transform[5]);
-    if(!rows[y]) rows[y] = [];
-    rows[y].push({x:it.transform[4], text:it.str});
+  // Alguns extratos (confirmado no Sicredi da Casa do Pai) têm uma coluna
+  // (ex. DESCRIÇÃO) com baseline Y ~0,3pt diferente do resto da linha, e esse
+  // offset às vezes cruza uma fronteira de arredondamento de Math.round(),
+  // quebrando uma única linha visual em DUAS — corrompendo o histórico
+  // extraído. Por isso agrupamos por Y com tolerância em vez de Y exato.
+  const Y_TOL = 1.5;
+  const items = content.items.map(it=>({y:it.transform[5], x:it.transform[4], text:it.str}))
+    .sort((a,b)=> b.y-a.y);
+  const rows = [];
+  items.forEach(it=>{
+    let row = rows.find(r=> Math.abs(r.y - it.y) <= Y_TOL);
+    if(!row){ row = {y:it.y, items:[]}; rows.push(row); }
+    row.items.push(it);
   });
-  const ys = Object.keys(rows).map(Number).sort((a,b)=>b-a);
-  return ys.map(y=> rows[y].sort((a,b)=>a.x-b.x).map(t=>t.text).join(" ").replace(/\s+/g," ").trim() ).filter(l=>l.length>0);
+  rows.sort((a,b)=> b.y-a.y);
+  return rows.map(r=> r.items.sort((a,b)=>a.x-b.x).map(t=>t.text).join(" ").replace(/\s+/g," ").trim() ).filter(l=>l.length>0);
 }
 async function extractPdfAllLines(file){
   const buf = await file.arrayBuffer();
