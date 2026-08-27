@@ -83,6 +83,9 @@ input[type=file]{display:none;}
 
 table.preview{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px;}
 table.preview th{text-align:left;padding:7px 8px;border-bottom:1.5px solid var(--rule-strong);font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.03em;color:var(--ink-soft);position:sticky;top:0;background:var(--paper-raised);white-space:nowrap;}
+table.preview th.sortable{cursor:pointer;user-select:none;}
+table.preview th.sortable:hover{color:var(--ink);}
+table.preview th.sortable .arrow{color:var(--accent);}
 .table-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
 .table-toolbar input[type=search]{flex:1;max-width:320px;padding:7px 9px;border:1.5px solid var(--rule-strong);border-radius:4px;font-size:13px;font-family:'IBM Plex Sans',sans-serif;background:var(--paper-raised);color:var(--ink);}
 .table-toolbar select{padding:7px 9px;border:1.5px solid var(--rule-strong);border-radius:4px;font-size:12.5px;font-family:'IBM Plex Sans',sans-serif;background:var(--paper-raised);color:var(--ink);}
@@ -647,7 +650,15 @@ function matchPadrao(empresa, texto){
    FLUXO PRINCIPAL
    ========================================================================= */
 let bancoAliveState = null, bancoCasaDoPaiState = null, receitasState = null, despesasState = null;
-let itensState = { filter:"", empresaFiltro:"", items:[] };
+let itensState = { filter:"", empresaFiltro:"", items:[], sortCol:null, sortDir:1 };
+function toggleItensSort(col){
+  if(itensState.sortCol===col){ itensState.sortDir *= -1; } else { itensState.sortCol = col; itensState.sortDir = 1; }
+  renderItensTable();
+}
+function itensSortTh(col, label){
+  const arrow = itensState.sortCol===col ? `<span class="arrow">${itensState.sortDir===1?"▲":"▼"}</span>` : "";
+  return `<th class="sortable" onclick="toggleItensSort('${col}')">${label} ${arrow}</th>`;
+}
 
 function setStatus(elId, msg, cls){
   const el = document.getElementById(elId);
@@ -741,9 +752,27 @@ function renderItensTable(){
     if(!needle) return true;
     return normalizeText(it.texto).includes(needle);
   });
+  if(itensState.sortCol){
+    const col = itensState.sortCol;
+    indexed.sort((a,b)=>{
+      let va = a.it[col], vb = b.it[col];
+      if(col==="data"){ va = va?partsToDate(va).getTime():null; vb = vb?partsToDate(vb).getTime():null; }
+      if(va==null && vb==null) return 0;
+      if(va==null) return 1;
+      if(vb==null) return -1;
+      if(typeof va==="number" && typeof vb==="number") return (va-vb)*itensState.sortDir;
+      return String(va).localeCompare(String(vb), "pt-BR", {numeric:true})*itensState.sortDir;
+    });
+  }
   document.getElementById("itensCount").textContent = `${indexed.length} de ${itensState.items.length}`;
   tbl.innerHTML = `<thead><tr>
-      <th></th><th>Data</th><th>Tipo</th><th>Descrição</th><th>Valor</th><th>Empresa</th><th>Conta (padrão casado)</th><th>Situação</th>
+      <th></th>
+      ${itensSortTh('data','Data')}
+      ${itensSortTh('tipo','Tipo')}
+      ${itensSortTh('texto','Descrição')}
+      ${itensSortTh('valor','Valor')}
+      ${itensSortTh('empresa','Empresa')}
+      <th>Conta (padrão casado)</th><th>Situação</th>
     </tr></thead><tbody>` +
     indexed.map(({it,i})=>{
       const classes = [];
