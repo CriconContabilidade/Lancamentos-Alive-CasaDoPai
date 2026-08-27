@@ -547,6 +547,11 @@ const PADROES_SEED = {
     // comentário do bloco 244) — esta entrada é específica desta transação (projeto elétrico
     // / Alisson Henrique), não um padrão genérico pra categoria inteira.
     {keywords:["PROJETO ELETRICO"], debito:91, credito:null, hist:"PGTO REF. ATUALIZACAO DO PROJETO ELETRICO IGREJA - ALISSON HENRIQUE", ignorar:false},
+    // Conta 100 = compra de comida (reuniões) e itens pra Santa Ceia. Histórico segue a
+    // descrição + fornecedor de cada linha do relatório (não um texto genérico único).
+    {keywords:["COMIDA REUNIAO DE LIDERES"], debito:100, credito:null, hist:"PGTO REF. COMIDA REUNIAO DE LIDERES - GIASSI", ignorar:false},
+    {keywords:["COMIDA REUNIAO LOUVOR"], debito:100, credito:null, hist:"PGTO REF. COMIDA REUNIAO LOUVOR - BORA PEDIR", ignorar:false},
+    {keywords:["SANTA CEIA"], debito:100, credito:null, hist:"PGTO REF. COMPRA DE ITENS PARA A SANTA CEIA", ignorar:false},
   ],
 };
 const CONTA_BANCO = {244: 10, 366: 7};
