@@ -538,6 +538,15 @@ const PADROES_SEED = {
     {keywords:["AGUA (DISTRIBUIDORA)","AGUA DISTRIBUIDORA"], debito:127, credito:null, hist:"PGTO REF. AGUA", ignorar:false},
     {keywords:["ENERGIA"], debito:126, credito:null, hist:"PGTO REF. ENERGIA", ignorar:false},
     {keywords:["ALUGUEL"], debito:128, credito:null, hist:"PGTO REF. ALUGUEL", ignorar:false},
+    {keywords:["IMPRESSOES"], debito:105, credito:null, hist:"PGTO REF. IMPRESSOES", ignorar:false},
+    // Salários ficam por pessoa (não por categoria genérica "Salário"), porque cada
+    // pastor/colaborador cai numa conta diferente do plano de contas da Alive.
+    {keywords:["LUANA CUCKER"], debito:108, credito:null, hist:"PGTO REF. SERVICOS ADMINISTRATIVOS PRESTADOS POR LUANA CUCKER ALVES", ignorar:false},
+    {keywords:["PRAESSLER"], debito:134, credito:null, hist:"PGTO REF. SUSTENTO PASTORAL - MARCIA ELLIS E HENRIQUE PRAESSLER", ignorar:false},
+    // "Aquisições e Melhorias" é categoria genérica de propósito excluída da automação (ver
+    // comentário do bloco 244) — esta entrada é específica desta transação (projeto elétrico
+    // / Alisson Henrique), não um padrão genérico pra categoria inteira.
+    {keywords:["PROJETO ELETRICO"], debito:91, credito:null, hist:"PGTO REF. ATUALIZACAO DO PROJETO ELETRICO IGREJA - ALISSON HENRIQUE", ignorar:false},
   ],
 };
 const CONTA_BANCO = {244: 10, 366: 7};
